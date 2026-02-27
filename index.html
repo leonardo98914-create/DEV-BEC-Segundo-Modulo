@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caja de Comentarios Practica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .comentario {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Caja de Comentarios</h2>
+
+    <textarea id="textoComentario" placeholder="Escribe tu comentario..." rows="4" cols="50"></textarea>
+    <br>
+    <button onclick="agregarComentario()">Agregar Comentario</button>
+
+    <div id="listaComentarios"></div>
+
+    <script>
+        function agregarComentario() {
+            let texto = document.getElementById("textoComentario").value;
+
+            if (texto.trim() === "") {
+                alert("El comentario no puede estar vacío");
+                return;
+            }
+
+            let fecha = new Date();
+            let fechaTexto = fecha.toLocaleString();
+
+            let contenedor = document.createElement("div");
+            contenedor.className = "comentario";
+
+            contenedor.innerHTML = `
+                <p><strong>Comentario:</strong> ${texto}</p>
+                <p><small>${fechaTexto}</small></p>
+                <button onclick="eliminarComentario(this)">Eliminar</button>
+            `;
+
+            document.getElementById("listaComentarios").appendChild(contenedor);
+
+            document.getElementById("textoComentario").value = "";
+        }
+
+        function eliminarComentario(boton) {
+            boton.parentElement.remove();
+        }
+    </script>
+
+</body>
+</html>
