@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Generador de Contraseñas</title>
+
+<style>
+    body {
+        background-color: #0f172a;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: white;
+    }
+
+    .contenedor {
+        background-color: #1e293b;
+        padding: 25px;
+        border-radius: 10px;
+        width: 300px;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        background-color: #0f172a;
+        color: white;
+        border: none;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .opciones {
+        margin: 10px 0;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #22c55e;
+        border: none;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .strength {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+    <h2>Password Generator</h2>
+
+    <input type="text" id="password" readonly>
+
+    <label>Longitud: <span id="valorLongitud">10</span></label>
+    <input type="range" id="longitud" min="8" max="20" value="10">
+
+    <div class="opciones">
+        <input type="checkbox" id="mayus" checked> Mayúsculas<br>
+        <input type="checkbox" id="minus" checked> Minúsculas<br>
+        <input type="checkbox" id="numeros" checked> Números<br>
+        <input type="checkbox" id="simbolos"> Símbolos
+    </div>
+
+    <button onclick="generarPassword()">GENERAR</button>
+
+    <div class="strength" id="fuerza"></div>
+</div>
+
+<script>
+let rango = document.getElementById("longitud");
+let valorLongitud = document.getElementById("valorLongitud");
+
+rango.addEventListener("input", function() {
+    valorLongitud.textContent = rango.value;
+});
+
+function generarPassword() {
+    let longitud = rango.value;
+    let incluirMayus = document.getElementById("mayus").checked;
+    let incluirMinus = document.getElementById("minus").checked;
+    let incluirNumeros = document.getElementById("numeros").checked;
+    let incluirSimbolos = document.getElementById("simbolos").checked;
+
+    let caracteres = "";
+
+    if (incluirMayus) caracteres += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (incluirMinus) caracteres += "abcdefghijklmnopqrstuvwxyz";
+    if (incluirNumeros) caracteres += "0123456789";
+    if (incluirSimbolos) caracteres += "!@#$%^&*()_+[]{}<>?";
+
+    if (caracteres === "") {
+        alert("Selecciona al menos una opción");
+        return;
+    }
+
+    let password = "";
+
+    for (let i = 0; i < longitud; i++) {
+        let random = Math.floor(Math.random() * caracteres.length);
+        password += caracteres[random];
+    }
+
+    document.getElementById("password").value = password;
+
+    evaluarFuerza(password);
+}
+
+function evaluarFuerza(pass) {
+    let fuerza = document.getElementById("fuerza");
+
+    if (pass.length >= 16) {
+        fuerza.textContent = "Fuerza: Alta 🔥";
+    } else if (pass.length >= 12) {
+        fuerza.textContent = "Fuerza: Media ⚠️";
+    } else {
+        fuerza.textContent = "Fuerza: Baja ❌";
+    }
+}
+</script>
+
+</body>
+</html>
