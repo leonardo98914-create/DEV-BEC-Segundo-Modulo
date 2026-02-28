@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mi Diario</title>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Proyecto Final.css">
+</head>
+
+<body>
+
+<div class="contenedor">
+    <h2>Mi Diario</h2>
+
+    <textarea id="comentarioInput" placeholder="Escribe tu comentario..."></textarea>
+    <button onclick="agregarComentario()">Agregar Comentario</button>
+
+    <div id="listaComentarios"></div>
+</div>
+
+<script>
+let comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
+
+// Mostrar comentarios guardados al cargar la página
+window.onload = function() {
+    comentarios.forEach(comentario => {
+        mostrarComentario(comentario.texto, comentario.fecha);
+    });
+};
+
+function agregarComentario() {
+    let texto = document.getElementById("comentarioInput").value;
+
+    if (texto.trim() === "") {
+        alert("Escribe un comentario primero.");
+        return;
+    }
+
+    let fecha = new Date().toLocaleString();
+
+    let nuevoComentario = { texto: texto, fecha: fecha };
+
+    comentarios.push(nuevoComentario);
+    localStorage.setItem("comentarios", JSON.stringify(comentarios));
+
+    mostrarComentario(texto, fecha);
+
+    document.getElementById("comentarioInput").value = "";
+}
+
+function mostrarComentario(texto, fecha) {
+    let nuevoComentario = document.createElement("div");
+    nuevoComentario.classList.add("comentario");
+
+    nuevoComentario.innerHTML = `
+        <p>${texto}</p>
+        <div class="fecha">${fecha}</div>
+        <button class="eliminar">Eliminar</button>
+    `;
+
+    // Botón eliminar
+    nuevoComentario.querySelector(".eliminar").addEventListener("click", function() {
+        eliminarComentario(texto, fecha);
+        nuevoComentario.remove();
+    });
+
+    document.getElementById("listaComentarios").appendChild(nuevoComentario);
+}
+
+function eliminarComentario(texto, fecha) {
+    comentarios = comentarios.filter(c => !(c.texto === texto && c.fecha === fecha));
+    localStorage.setItem("comentarios", JSON.stringify(comentarios));
+}
+</script>
+
+</body>
+</html>
