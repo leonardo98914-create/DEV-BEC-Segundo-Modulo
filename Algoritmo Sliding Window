@@ -1,0 +1,25 @@
+// Texto de ejemplo
+const texto = "Estoy aprendiendo JavaScript y en DEVBEC";
+
+// Función para encontrar la palabra más larga
+const palabraMasLarga = (cadena) => {
+  //Dividir el texto en palabras
+  const palabras = cadena.split(" ");
+
+  //Inicializar la palabra más larga
+  let masLarga = "";
+
+  //Recorrer el arreglo 
+  for (let i = 0; i < palabras.length; i++) {
+    if (palabras[i].length > masLarga.length) {
+      masLarga = palabras[i];
+    }
+  }
+
+  // Devolver resultado
+  return masLarga;
+};
+
+// Ejecutar
+const resultado = palabraMasLarga(texto);
+console.log("Palabra más larga:", resultado);
